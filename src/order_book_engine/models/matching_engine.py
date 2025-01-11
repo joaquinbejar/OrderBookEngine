@@ -180,32 +180,13 @@ class MatchingEngine(ABC):
         return filled_orders, partially_filled_orders
 
     def _match_limit_order(self, order: Order, asks: OrderedDict, bids: OrderedDict) -> Tuple[Order, List[Order], int]:
-        """
-        Matches a limit order against the current order book based on its type (BUY or SELL),
-        attempting to find the best possible match while respecting price constraints.
-        For BUY orders, it matches with the lowest asks. For SELL orders, it matches
-        with the highest bids. Orders are matched iteratively until either the order is
-        fully matched or there are no suitable counterparties left in the order book.
-
-        :param order: The limit order to be matched against the order book.
-        :type order: Order
-        :param asks: A dictionary representing the current asks in the order book, where
-                     keys are the prices and values are the orders at those prices.
-        :type asks: OrderedDict
-        :param bids: A dictionary representing the current bids in the order book, where
-                     keys are the prices and values are the orders at those prices.
-        :type bids: OrderedDict
-        :return: A tuple containing the updated order (which may have a reduced quantity),
-                 the list of matched orders during this matching process, and the remaining
-                 quantity of the order after the matching process.
-        :rtype: Tuple[Order, List[Order], int]
-        """
         matched_orders = []
 
-        # Try to match first
         if order.side == OrderSide.BUY:
             while asks and min(asks.keys()) <= order.price:
                 best_ask = self.get_best_ask()
+                if not best_ask:  # Check if the best ask exists
+                    break
                 filled, partial, remain = best_ask[1].get_qty(
                     order.quantity,
                     Position.SHORT if order.position == Position.LONG else Position.LONG
@@ -216,10 +197,11 @@ class MatchingEngine(ABC):
                 if remain == 0:
                     break
                 order.quantity = remain
-
         else:  # SELL
             while bids and max(bids.keys()) >= order.price:
                 best_bid = self.get_best_bid()
+                if not best_bid:  # Check if the best bid exists
+                    break
                 filled, partial, remain = best_bid[1].get_qty(
                     order.quantity,
                     Position.LONG if order.position == Position.SHORT else Position.SHORT
