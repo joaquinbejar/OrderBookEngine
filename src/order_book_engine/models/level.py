@@ -6,14 +6,23 @@ from ..models.order import Order, Position, OrderSide
 
 
 class PriceLevel:
-    def __init__(self, price: float):
-
+    def __init__(self, price: float, symbol: str):
+        self.symbol = symbol
         self.long_total = 0
         self.short_total = 0
         self.price = price
         # Separate queues for LONG and SHORT positions
         self.long_orders = deque() # FIFO queue
         self.short_orders = deque() # FIFO queue
+
+    def __str__(self) -> str:
+        str_out = (f"price={self.price}, "
+                f"long_orders={self.long_orders}, "
+                f"short_orders={self.short_orders})")
+        return str_out
+
+    def __repr__(self) -> str:
+        return self.__str__()
 
     def add_order(self, order: Order) -> None:
         """

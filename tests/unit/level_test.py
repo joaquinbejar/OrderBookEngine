@@ -7,9 +7,11 @@ from src.order_book_engine.models.level import PriceLevel
 
 class TestPriceLevel(unittest.TestCase):
     def setUp(self):
-        self.price_level = PriceLevel(100.0)
+        self.symbol = "GCQ4"
+        self.price_level = PriceLevel(100.0, self.symbol)
         self.long_order = Order(
             id="1",
+            symbol=self.symbol,
             type=OrderType.LIMIT,
             side=OrderSide.BUY,
             position=Position.LONG,
@@ -19,6 +21,7 @@ class TestPriceLevel(unittest.TestCase):
         )
         self.short_order = Order(
             id="2",
+            symbol=self.symbol,
             type=OrderType.LIMIT,
             side=OrderSide.SELL,
             position=Position.SHORT,
@@ -106,3 +109,20 @@ class TestPriceLevel(unittest.TestCase):
         self.assertEqual(partial.quantity, 1)
         self.assertEqual(remaining, 0)
         self.assertEqual(self.price_level.short_total, 2)
+
+    def test_str_representation(self):
+        price_level = PriceLevel(10.5, self.symbol)
+        str_output = str(price_level)
+        expected = "price=10.5, long_orders=deque([]), short_orders=deque([]))"
+        self.assertEqual(str_output, expected)
+
+    def test_repr(self):
+        price_level = PriceLevel(10.5, self.symbol)
+        repr_output = repr(price_level)
+        str_output = str(price_level)
+        self.assertEqual(repr_output, str_output)
+
+    def test_can_match_empty_queue(self):
+        price_level = PriceLevel(10.5, self.symbol)
+        order = Order("1", self.symbol, OrderType.LIMIT, OrderSide.BUY, Position.LONG, 100, datetime.now(), 10.5)
+        self.assertFalse(price_level.can_match(order))

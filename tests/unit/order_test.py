@@ -7,10 +7,12 @@ from src.order_book_engine.models.order import Order, OrderType, OrderSide, Posi
 class TestOrder(unittest.TestCase):
    def setUp(self):
        self.timestamp = datetime.now()
+       self.symbol = "GCQ4"
 
    def test_market_order_creation(self):
        order = Order(
            id="1",
+           symbol=self.symbol,
            type=OrderType.MARKET,
            side=OrderSide.BUY,
            position=Position.LONG,
@@ -22,6 +24,7 @@ class TestOrder(unittest.TestCase):
    def test_limit_order_creation(self):
        order = Order(
            id="2",
+           symbol=self.symbol,
            type=OrderType.LIMIT,
            side=OrderSide.SELL,
            position=Position.SHORT,
@@ -35,6 +38,7 @@ class TestOrder(unittest.TestCase):
        with self.assertRaises(ValueError) as context:
            Order(
                id="3",
+               symbol=self.symbol,
                type=OrderType.LIMIT,
                side=OrderSide.BUY,
                position=Position.LONG,
@@ -46,6 +50,7 @@ class TestOrder(unittest.TestCase):
    def test_order_enums(self):
        order = Order(
            id="4",
+           symbol=self.symbol,
            type=OrderType.MARKET,
            side=OrderSide.BUY,
            position=Position.LONG,

@@ -76,12 +76,15 @@ class Order:
     :type price: Optional[float]
     """
     id: str
+    symbol: str
     type: OrderType
     side: OrderSide
     position: Position
     quantity: int
     timestamp: datetime
+
     price: Optional[float] = None
+
 
     def __post_init__(self):
         if self.type == OrderType.LIMIT and self.price is None:
