@@ -1,0 +1,9 @@
+[run]
+source = src/order_book_engine/
+branch = True
+omit =
+    *migrations*
+    *__init__.py
+
+[report]
+show_missing = True
