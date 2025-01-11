@@ -4,6 +4,8 @@ PYINSTALLER := pyinstaller
 VENV_NAME?=venv
 VENV_ACTIVATE=$(VENV_NAME)/bin/activate
 PYTHON_PATH=$(shell which python3.11)
+COVERAGE_LOCATION=coverage_html/index.html
+
 
 create-venv: delete-venv
 	$(PYTHON_PATH) -m venv $(VENV_NAME)
@@ -52,9 +54,10 @@ docker-run: docker-build docker-clean
 ### ***** UNIT TESTS ***** ###
 
 run-unit-test-coverage:
-	coverage run --source=order_book_engine -m unittest discover -v -s ./tests/unit/ -p '*test*.py'
-	coverage report
-	coverage html -d coverage_html
+	pip install .[tests]
+	PYTHONPATH=. coverage run --source=src/order_book_engine -m unittest discover -v -s ./tests/unit/ -p '*test*.py'
+	PYTHONPATH=. coverage report
+	PYTHONPATH=. coverage html -d coverage_html
 	echo report at '$(COVERAGE_LOCATION)'
 
 run-unit-tests:		## Run unit tests
