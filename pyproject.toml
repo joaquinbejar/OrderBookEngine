@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "order_book_engine"
-version = "0.1.0"
+version = "0.2.0"
 dynamic = ["readme"]
 authors = [
     { name = "©2025 Joaquin Bejar", email = "jb@taunais.com" },
