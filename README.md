@@ -129,4 +129,15 @@ Feel free to fork this repository, open issues, and submit pull requests. Contri
 
 ## Contact
 
-For any questions or inquiries, please contact [Joaquín Bejar](https://github.com/joaquinbejar).
+### **Contact Information**
+- **Author**: Joaquín Béjar García
+- **Email**: jb@taunais.com
+- **Telegram**: [@joaquin_bejar](https://t.me/joaquin_bejar)
+- **Repository**: <https://github.com/joaquinbejar/OrderBookEngine>
+
+<!-- related-projects:start -->
+## Related projects
+
+No other repositories by the same author depend on this project, and it depends on none of them. See all of them at <https://github.com/joaquinbejar?tab=repositories>.
+
+<!-- related-projects:end -->
